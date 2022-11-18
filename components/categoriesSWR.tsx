@@ -1,77 +1,58 @@
-/*Client side - data fetching  */
-import { classNames } from "@/lib/helper";
+/*Client side - data fetching using SWR  */
 import { Category } from "@/lib/types";
-import Image from "next/image";
-import Link from "next/link";
+import useSWR from "swr";
 import React, { useEffect, useState } from "react";
-type props = {
-  categories: Array<Category>;
-  title: string;
-  ctaText: string;
-  ctaHref: string;
-  classes?: string;
-};
-const Categories = ({
-  categories,
-  title,
-  ctaText,
-  ctaHref,
-  classes,
-}: props) => {
-  const className = classes || "";
+
+const fetcher = (url: string) => fetch(url).then((response) => response.json());
+
+const CategoriesSWR = () => {
+  const { data, error, isValidating } = useSWR(
+    "/api/categories?wait=true&ms=5000",
+    fetcher
+  );
+
+  if (error) return <div>Failed to load</div>;
+  if ((!data && !error) || isValidating) return <div>Loading...</div>;
+
   return (
     <section
       aria-labelledby="category-heading"
-      className={classNames([
-        "pt-24 sm:pt-32 xl:mx-auto xl:max-w-7xl xl:px-8",
-        className,
-      ])}
+      className="pt-24 sm:pt-32 xl:mx-auto xl:max-w-7xl xl:px-8"
     >
       <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
         <h2
           id="category-heading"
           className="text-2xl font-bold tracking-tight text-gray-900"
         >
-          {title}
+          Shop by Category (client side data loading using SWR)
         </h2>
-        {ctaText && ctaHref ? (
-          <Link
-            href={ctaHref}
-            className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
-          >
-            {ctaText}
-            <span aria-hidden="true"> &rarr;</span>
-          </Link>
-        ) : (
-          <></>
-        )}
+        <a
+          href="#"
+          className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
+        >
+          Browse all categories
+          <span aria-hidden="true"> &rarr;</span>
+        </a>
       </div>
 
       <div className="mt-4 flow-root">
         <div className="-my-2">
           <div className="relative box-content h-80 overflow-x-auto py-2 xl:overflow-visible">
             <div className="min-w-screen-xl absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">
-              {categories &&
-                categories.length > 0 &&
-                categories.map((category) => (
-                  <Link
+              {data &&
+                data.length > 0 &&
+                data.map((category) => (
+                  <a
                     key={category.name}
                     href={category.href}
                     className="relative flex h-80 w-56 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto"
                   >
                     <span aria-hidden="true" className="absolute inset-0">
-                      <Image
-                        alt={category.name}
-                        src={category.imageSrc}
-                        width="448"
-                        height="640"
-                        className="h-full w-full object-cover object-center"
-                      />
-                      {/* <img
+                      <img
                         src={category.imageSrc}
                         alt=""
                         className="h-full w-full object-cover object-center"
-                      /> */}
+                      />
                     </span>
                     <span
                       aria-hidden="true"
@@ -80,7 +61,7 @@ const Categories = ({
                     <span className="relative mt-auto text-center text-xl font-bold text-white">
                       {category.name}
                     </span>
-                  </Link>
+                  </a>
                 ))}
             </div>
           </div>
@@ -100,4 +81,4 @@ const Categories = ({
   );
 };
 
-export default Categories;
+export default CategoriesSWR;
