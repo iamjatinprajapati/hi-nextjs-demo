@@ -7,7 +7,7 @@ const fetcher = (url: string) => fetch(url).then((response) => response.json());
 
 const CategoriesSWR = () => {
   const { data, error, isValidating } = useSWR(
-    "/api/categories?wait=true&ms=5000",
+    "/api/categories?wait=true&ms=500",
     fetcher
   );
 
@@ -41,7 +41,7 @@ const CategoriesSWR = () => {
             <div className="min-w-screen-xl absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">
               {data &&
                 data.length > 0 &&
-                data.map((category) => (
+                data.map((category: Category) => (
                   <a
                     key={category.name}
                     href={category.href}

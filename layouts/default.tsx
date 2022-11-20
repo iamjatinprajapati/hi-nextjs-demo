@@ -130,8 +130,6 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <div className="bg-white">
       <Header />
-      {/* Hero section */}
-      <Hero />
       <main>{children}</main>
       <Footer />
     </div>

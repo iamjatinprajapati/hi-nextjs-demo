@@ -1,8 +1,8 @@
 import CategoriesSWR from "@/components/categoriesSWR";
 import FeaturedSection from "@/components/featuredsection";
+import Hero from "@/components/hero";
+import { DocumentContext } from "next/document";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 const collections = [
   {
     name: "Handcrafted Collection",
@@ -35,9 +35,16 @@ const collections = [
       "Be more productive than enterprise project managers with a single piece of paper.",
   },
 ];
-export default function Home() {
+type Props = {
+  browserTitle: string;
+};
+const Home = ({ browserTitle }: Props) => {
   return (
     <>
+      <Head>
+        <title>{browserTitle}</title>
+      </Head>
+      <Hero />
       <CategoriesSWR />
       <FeaturedSection
         BackgroundImageUrl="https://tailwindui.com/img/ecommerce-images/home-page-01-feature-section-01.jpg"
@@ -117,4 +124,19 @@ export default function Home() {
       />
     </>
   );
-}
+};
+
+/**
+ * The getInitialProps enables server-side rendering in a page and allows you to do initial data population,
+ * it means sending the page with the data already populated from the server. This is especially useful for SEO.
+ *
+ * getInitialProps will disable Automatic Static Optimization
+ */
+Home.getInitialProps = async (context: DocumentContext) => {
+  const browserTitle = "Home";
+  return {
+    browserTitle: browserTitle,
+  };
+};
+
+export default Home;
