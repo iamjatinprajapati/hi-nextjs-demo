@@ -9,6 +9,9 @@ const Hero = ({
   ctaHref,
   backgroundImage,
 }: HeroProps) => {
+  const descriptionText =
+    description ??
+    "The new arrivals have, well, newly arrived. Check out the latest options from our summer small-batch release while they're still in tock.";
   return (
     <div className="relative bg-gray-900">
       {/* Decorative image and overlay */}
@@ -33,10 +36,10 @@ const Hero = ({
         <h1 className="text-4xl font-bold tracking-tight text-white lg:text-6xl">
           {title ? title : "New arrivals are here"}
         </h1>
-        <p className="mt-4 text-xl text-white">
-          {description ??
-            "The new arrivals have, well, newly arrived. Check out the latest options from our summer small-batch release while they're still in tock."}
-        </p>
+        <p
+          className="mt-4 text-xl text-white"
+          dangerouslySetInnerHTML={{ __html: descriptionText }}
+        ></p>
         <a
           href={ctaHref ?? "#"}
           className="mt-8 inline-block rounded-md border border-transparent bg-white py-3 px-8 text-base font-medium text-gray-900 hover:bg-gray-100"

@@ -1,7 +1,6 @@
 import CategoriesSWR from "@/components/categoriesSWR";
 import FeaturedSection from "@/components/featuredsection";
 import Hero from "@/components/hero";
-import { DocumentContext } from "next/document";
 import Head from "next/head";
 const collections = [
   {
@@ -132,7 +131,7 @@ const Home = ({ browserTitle }: Props) => {
  *
  * getInitialProps will disable Automatic Static Optimization
  */
-Home.getInitialProps = async (context: DocumentContext) => {
+Home.getInitialProps = async (context: any) => {
   const browserTitle = "Home";
   return {
     browserTitle: browserTitle,

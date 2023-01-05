@@ -5,6 +5,11 @@ import React, { useEffect, useState } from "react";
 
 const fetcher = (url: string) => fetch(url).then((response) => response.json());
 
+/**
+ * SWR means "stale-while-revalidate". SWR is a strategry to first return the data from cache (stale), then send the fetch request (revalidate), and finally come with the
+ * up-to-date data.
+ * @returns
+ */
 const CategoriesSWR = () => {
   const { data, error, isValidating } = useSWR(
     "/api/categories?wait=true&ms=500",
